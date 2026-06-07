@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Konfigurasi dasar tanpa plugin tambahan untuk menghindari bentrok dependensi
+  esbuild: {
+    jsxInject: `import React from 'react'`,
+  },
   build: {
     outDir: 'dist',
   }
