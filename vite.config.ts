@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/react-refresh'
+import react from '@vitejs/plugin-react'
 
-// Konfigurasi standar tanpa pengecekan modul eksternal
 export default defineConfig({
   plugins: [react()],
 })
