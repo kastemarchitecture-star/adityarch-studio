@@ -20,5 +20,5 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["main.tsx", "src/**/*", "App.tsx"]
+  "include": ["main.tsx", "App.tsx"]
 }
