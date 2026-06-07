@@ -1,0 +1,2100 @@
+import { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence, type Variants } from 'framer-motion';
+import { Phone, Mail, MapPin, ChevronDown, X, ArrowRight, Check, Star, Building2, PenTool, Hammer, Sofa, Clock, Shield, Award, Hop as Home } from 'lucide-react';
+import './index.css';
+
+// Fade in animation variants
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+  }
+};
+
+// Header Component
+function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { href: '#portfolio', label: 'Portfolio' },
+    { href: '#services', label: 'Layanan' },
+    { href: '#benefits', label: 'Keunggulan' },
+    { href: '#testimonials', label: 'Testimoni' },
+    { href: '#contact', label: 'Kontak' },
+  ];
+
+  return (
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        background: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(201, 169, 98, 0.1)' : 'none',
+        transition: 'all 0.3s ease'
+      }}
+    >
+      <div className="container" style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: scrolled ? '16px 32px' : '24px 32px',
+        transition: 'padding 0.3s ease'
+      }}>
+        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            background: 'linear-gradient(135deg, #2C2C2C, #1A1A1A)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative'
+          }}>
+            <span style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '24px',
+              fontWeight: 600,
+              color: '#C9A962'
+            }}>A</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '18px',
+              fontWeight: 600,
+              color: scrolled ? '#2C2C2C' : '#FFFFFF',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              lineHeight: 1.2
+            }}>ADITYARCH</span>
+            <span style={{
+              fontSize: '9px',
+              fontWeight: 500,
+              color: scrolled ? '#C9A962' : 'rgba(255,255,255,0.8)',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase'
+            }}>Studio & Build</span>
+          </div>
+        </a>
+
+        <nav style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '40px'
+        }} className="desktop-nav">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: scrolled ? '#2C2C2C' : '#FFFFFF',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                position: 'relative',
+                paddingBottom: '4px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#C9A962';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = scrolled ? '#2C2C2C' : '#FFFFFF';
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="https://wa.me/6282147777570"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-gold"
+            style={{
+              padding: '12px 24px',
+              fontSize: '11px'
+            }}
+          >
+            Konsultasi Gratis
+          </a>
+        </nav>
+
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          style={{
+            display: 'none',
+            color: scrolled ? '#2C2C2C' : '#FFFFFF',
+            padding: '8px'
+          }}
+          className="mobile-menu-btn"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '80%',
+              maxWidth: '320px',
+              background: '#FFFFFF',
+              padding: '32px',
+              zIndex: 2000,
+              boxShadow: '-10px 0 40px rgba(0,0,0,0.1)'
+            }}
+          >
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                color: '#2C2C2C'
+              }}
+            >
+              <X size={24} />
+            </button>
+            <div style={{ marginTop: '64px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    color: '#2C2C2C',
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="https://wa.me/6282147777570"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-gold"
+                style={{ marginTop: '16px' }}
+              >
+                Konsultasi Gratis
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        @media (max-width: 1024px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: block !important; }
+        }
+      `}</style>
+    </motion.header>
+  );
+}
+
+// Hero Section
+function Hero() {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  return (
+    <section style={{
+      position: 'relative',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden'
+    }}>
+      {/* Video Background Placeholder */}
+      <motion.div
+        style={{ y }}
+        className="hero-bg"
+        dangerouslySetInnerHTML={{
+          __html: `
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              minWidth: '100%',
+              minHeight: '100%',
+              width: 'auto',
+              height: 'auto',
+              transform: 'translate(-50%, -50%)',
+              objectFit: 'cover',
+              zIndex: -2
+            }}
+          >
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-luxury-house-with-pool-4642-large.mp4" type="video/mp4" />
+          </video>
+        `}}
+      />
+
+      {/* Fallback Background Image */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: `url('https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1920')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'brightness(0.4)',
+        zIndex: -1
+      }} />
+
+      {/* Gradient Overlays */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(180deg, rgba(26,26,26,0.4) 0%, transparent 40%, transparent 60%, rgba(26,26,26,0.8) 100%)',
+        zIndex: 0
+      }} />
+
+      {/* Content */}
+      <motion.div
+        style={{ opacity }}
+        className="container"
+        role="main"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          style={{
+            textAlign: 'center',
+            maxWidth: '1000px',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1
+          }}
+        >
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(14px, 2vw, 16px)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: '#C9A962',
+              letterSpacing: '0.1em',
+              marginBottom: '24px'
+            }}
+          >
+            "Designing Timeless Luxury, Building Your Legacy"
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            style={{
+              color: '#FFFFFF',
+              marginBottom: '32px',
+              lineHeight: 1.15
+            }}
+          >
+            Desain Rumah Mewah Modern Classic Eropa dengan Nilai Investasi Premium
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            style={{
+              fontSize: 'clamp(16px, 2vw, 20px)',
+              color: 'rgba(255,255,255,0.85)',
+              maxWidth: '800px',
+              margin: '0 auto 24px',
+              lineHeight: 1.8
+            }}
+          >
+            Wujudkan rumah impian bergaya Eropa dengan apresiasi nilai 12-28% per tahun. ADITYARCH menghadirkan solusi design, build & interior terintegrasi untuk investasi property premium di Balikpapan dan Kalimantan Timur.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.0 }}
+            style={{
+              fontSize: 'clamp(14px, 1.5vw, 18px)',
+              color: 'rgba(255,255,255,0.7)',
+              maxWidth: '700px',
+              margin: '0 auto 48px',
+              lineHeight: 1.7
+            }}
+          >
+            Spesialisasi: European Modern Classic Homes • Resort Development • Investment-Grade Properties. Dari konsep awal hingga finishing premium dalam satu manajemen profesional.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '16px',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <a href="https://wa.me/6282147777570" target="_blank" rel="noopener noreferrer" className="btn btn-gold btn-lg">
+              Konsultasi Gratis
+              <ArrowRight size={18} />
+            </a>
+            <a href="https://wa.me/6282147777570?text=Halo,%20saya%20ingin%20jadwal%20survey%20gratis" target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-lg" style={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.5)' }}>
+              Jadwalkan Survey Gratis
+            </a>
+            <a href="#portfolio" className="btn btn-secondary btn-lg" style={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.5)' }}>
+              Lihat Portfolio
+            </a>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        style={{
+          position: 'absolute',
+          bottom: '40px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: '#FFFFFF',
+          opacity: 0.6,
+          zIndex: 1
+        }}
+      >
+        <ChevronDown size={32} />
+      </motion.div>
+    </section>
+  );
+}
+
+// Why Choose Us Section
+function WhyChooseUs() {
+  const reasons = [
+    {
+      icon: <Home size={32} />,
+      title: 'Design Modern Classic Specialist',
+      description: 'Menghadirkan desain yang sedang menjadi tren dan memiliki nilai investasi tinggi.'
+    },
+    {
+      icon: <Building2 size={32} />,
+      title: 'One Stop Solution',
+      description: 'Design, Konstruksi, Interior, Furniture dalam satu manajemen terintegrasi.'
+    },
+    {
+      icon: <Award size={32} />,
+      title: 'Pengalaman Jawa & Bali',
+      description: 'Membawa kualitas desain dan pengerjaan premium ke Kalimantan Timur.'
+    },
+    {
+      icon: <Phone size={32} />,
+      title: 'Free Consultation',
+      description: 'Konsultasi dan survey GRATIS untuk area Balikpapan.'
+    },
+    {
+      icon: <Shield size={32} />,
+      title: 'Transparan',
+      description: 'Progress report berkala dan pengawasan ketat setiap tahap proyek.'
+    },
+    {
+      icon: <Clock size={32} />,
+      title: 'Tepat Waktu',
+      description: 'Manajemen proyek profesional dan terukur dengan timeline yang jelas.'
+    }
+  ];
+
+  return (
+    <section id="why-us" className="section bg-ivory">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Mengapa Memilih Kami</motion.span>
+          <motion.h2 variants={fadeInUp}>Keunggulan ADITYARCH</motion.h2>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '32px'
+          }}
+        >
+          {reasons.map((reason, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              style={{
+                background: '#FFFFFF',
+                padding: '40px 32px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '4px',
+                height: '100%',
+                background: 'linear-gradient(180deg, #C9A962, #D4BD7A)'
+              }} />
+
+              <div style={{
+                width: '64px',
+                height: '64px',
+                border: '1px solid rgba(201, 169, 98, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px',
+                color: '#C9A962'
+              }}>
+                {reason.icon}
+              </div>
+
+              <h4 style={{ marginBottom: '12px', color: '#2C2C2C' }}>{reason.title}</h4>
+              <p style={{ color: '#8B8680', margin: 0 }}>{reason.description}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Portfolio Section
+function Portfolio() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [filter, setFilter] = useState('all');
+
+  const categories = [
+    { id: 'all', label: 'Semua' },
+    { id: 'exterior', label: 'Eksterior' },
+    { id: 'interior', label: 'Interior' },
+    { id: 'furniture', label: 'Furniture' },
+    { id: 'commercial', label: 'Commercial' }
+  ];
+
+  const portfolioItems = [
+    // ADITYARCH Custom Projects
+    { id: 1, category: 'exterior', title: 'Modern Classic Villa - Kastemizing The Future', image: '/src/assets/Screenshot_2026-06-06_212235.png' },
+    { id: 2, category: 'interior', title: 'Luxury Master Bedroom Suite - White Gold Theme', image: '/src/assets/Screenshot_2026-06-06_212247.png' },
+    { id: 3, category: 'exterior', title: 'Tropical Modern House - Riverside View', image: '/src/assets/Screenshot_2026-06-06_212308.png' },
+    { id: 4, category: 'exterior', title: 'Contemporary A-Frame Villa - Premium Design', image: '/src/assets/Screenshot_2026-06-06_212320.png' },
+    { id: 5, category: 'exterior', title: 'Minimalist Modern House - Pure Elegance', image: '/src/assets/Screenshot_2026-06-06_212333.png' },
+
+    // New Uploaded Collection
+    { id: 6, category: 'interior', title: 'Master Suite Neoclassical - Gold & Marble', image: '/src/assets/Screenshot_2026-06-06_212358.png', featured: true },
+    { id: 7, category: 'interior', title: 'Luxury Bedroom Traditional - Warm Woods', image: '/src/assets/Screenshot_2026-06-06_212424.png' },
+    { id: 8, category: 'exterior', title: 'Modern Minimalist Brick House', image: '/src/assets/Screenshot_2026-06-06_212442.png', featured: true },
+    { id: 9, category: 'exterior', title: 'European Neoclassical Residence', image: '/src/assets/Screenshot_2026-06-06_212521.png' },
+    { id: 10, category: 'exterior', title: 'Contemporary Commercial Building', image: '/src/assets/Screenshot_2026-06-06_212532.png' },
+    { id: 11, category: 'furniture', title: 'Contemporary Wood Furniture Collection', image: '/src/assets/Screenshot_2026-06-06_212559.png', featured: true },
+    { id: 12, category: 'exterior', title: 'Modern Minimalist Pavilion - Metal & Glass', image: '/src/assets/Screenshot_2026-06-06_212614.png' },
+    { id: 13, category: 'exterior', title: 'Tropical Modern Resort - Landscape Integration', image: '/src/assets/Screenshot_2026-06-06_212757.png', featured: true },
+    { id: 14, category: 'commercial', title: 'Luxury Resort Masterplan - Rembang', image: '/src/assets/Screenshot_2026-06-06_213154.png' },
+
+    // European Modern Classic Houses (Stock Inspirational)
+    { id: 15, category: 'exterior', title: 'European Modern Classic - Minimalist Chic', image: 'https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 16, category: 'exterior', title: 'Scandinavian Modern House - Clean Lines', image: 'https://images.pexels.com/photos/2093156/pexels-photo-2093156.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 17, category: 'interior', title: 'Luxury Bedroom - European Style', image: 'https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 18, category: 'interior', title: 'Modern Classic Living Room', image: 'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 19, category: 'exterior', title: 'Glass & Concrete Modern Villa', image: 'https://images.pexels.com/photos/2595889/pexels-photo-2595889.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 20, category: 'exterior', title: 'Contemporary European Residence', image: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 21, category: 'interior', title: 'Premium Master Suite - Gold Accents', image: 'https://images.pexels.com/photos/2053148/pexels-photo-2053148.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 22, category: 'exterior', title: 'Modern Minimalist Home - Geometric Design', image: 'https://images.pexels.com/photos/3237809/pexels-photo-3237809.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 23, category: 'interior', title: 'Elegant Dining Room - Modern Classic', image: 'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 24, category: 'exterior', title: 'Luxury Villa - Terraced Design', image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 25, category: 'interior', title: 'Modern Kitchen - Premium Finishes', image: 'https://images.pexels.com/photos/6678384/pexels-photo-6678384.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 26, category: 'exterior', title: 'Contemporary Pavilion - Modern Design', image: 'https://images.pexels.com/photos/2630412/pexels-photo-2630412.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 27, category: 'exterior', title: 'Modern Glass House - Transparency', image: 'https://images.pexels.com/photos/1667071/pexels-photo-1667071.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 28, category: 'interior', title: 'Luxury Bathroom - Marble & Gold', image: 'https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 29, category: 'exterior', title: 'Hillside Modern Villa - Panoramic View', image: 'https://images.pexels.com/photos/1579253/pexels-photo-1579253.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+    { id: 30, category: 'interior', title: 'Contemporary Home Office - Modern Classic', image: 'https://images.pexels.com/photos/6747868/pexels-photo-6747868.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+  ];
+
+  const filteredItems = filter === 'all'
+    ? portfolioItems
+    : portfolioItems.filter(item => item.category === filter);
+
+  return (
+    <section id="portfolio" className="section bg-white">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Portfolio</motion.span>
+          <motion.h2 variants={fadeInUp}>Karya Terbaik Kami</motion.h2>
+          <motion.p variants={fadeInUp}>
+            Eksplorasi koleksi desain dan konstruksi premium yang telah kami wujudkan
+          </motion.p>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        {/* Filter Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '12px',
+            marginBottom: '48px'
+          }}
+        >
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setFilter(cat.id)}
+              style={{
+                padding: '12px 24px',
+                fontSize: '12px',
+                fontWeight: 500,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                background: filter === cat.id ? '#2C2C2C' : 'transparent',
+                color: filter === cat.id ? '#FFFFFF' : '#2C2C2C',
+                border: '1px solid #2C2C2C',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Masonry Grid */}
+        <motion.div
+          layout
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '24px',
+            alignItems: 'start'
+          }}
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.4 }}
+                whileHover={{ y: -8 }}
+                onClick={() => setSelectedImage(item.image)}
+                style={{
+                  position: 'relative',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  background: '#F5F5F0',
+                  aspectRatio: index % 5 === 0 ? '1/1.3' : '1/1'
+                }}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'transform 0.6s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, transparent 50%, rgba(26, 26, 26, 0.9) 100%)',
+                  opacity: 0,
+                  transition: 'opacity 0.3s ease'
+                }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '0';
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '24px',
+                    color: '#FFFFFF'
+                  }}>
+                    <h4 style={{ color: '#FFFFFF', marginBottom: '8px' }}>{item.title}</h4>
+                    <span style={{
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                      color: '#C9A962'
+                    }}>{item.category}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ textAlign: 'center', marginTop: '64px' }}
+        >
+          <a
+            href="https://wa.me/6282147777570"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-gold btn-lg"
+          >
+            Wujudkan Hunian Impian Anda
+            <ArrowRight size={18} />
+          </a>
+        </motion.div>
+      </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.95)',
+              zIndex: 2000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '40px',
+              cursor: 'pointer'
+            }}
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                color: '#FFFFFF',
+                padding: '8px'
+              }}
+            >
+              <X size={32} />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              src={selectedImage}
+              alt="Portfolio"
+              style={{
+                maxWidth: '90%',
+                maxHeight: '90vh',
+                objectFit: 'contain'
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+// Services Section
+function Services() {
+  const services = [
+    {
+      icon: <PenTool size={40} />,
+      title: 'Architectural Design',
+      description: 'Desain arsitektur premium yang memaksimalkan nilai estetika dan fungsional properti Anda.',
+      offerings: [
+        'Desain Rumah, Villa, Ruko',
+        'Cafe & Restaurant Design',
+        'Resort & Commercial Building',
+        '3D Rendering Realistic',
+        'Gambar Kerja Lengkap',
+        'Detail Engineering Drawing (DED)',
+        'Rencana Anggaran Biaya (RAB)'
+      ]
+    },
+    {
+      icon: <Hammer size={40} />,
+      title: 'Construction & Build',
+      description: 'Konstruksi berkualitas tinggi dengan pengawasan ketat dan timeline yang terukur.',
+      offerings: [
+        'Bangun Baru',
+        'Renovasi',
+        'Interior Fit Out',
+        'Pengawasan Profesional',
+        'Kualitas Material Terjamin',
+        'Timeline Terukur',
+        'Progress Report Berkala'
+      ]
+    },
+    {
+      icon: <Sofa size={40} />,
+      title: 'Interior & Furniture',
+      description: 'Interior eksklusif dan furniture custom yang melengkapi keindahan hunian Anda.',
+      offerings: [
+        'Kitchen Set Premium',
+        'Wardrobe & Walk-in Closet',
+        'TV Cabinet & Display Unit',
+        'Living Room Interior',
+        'Bedroom Interior',
+        'Office Furniture',
+        'Custom Furniture'
+      ]
+    }
+  ];
+
+  return (
+    <section id="services" className="section bg-charcoal">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Layanan Kami</motion.span>
+          <motion.h2 variants={fadeInUp} style={{ color: '#FFFFFF' }}>Layanan Lengkap Terintegrasi</motion.h2>
+          <motion.p variants={fadeInUp} style={{ color: 'rgba(255,255,255,0.7)' }}>
+            Satu tim profesional untuk semua kebutuhan properti Anda
+          </motion.p>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: '32px'
+          }}
+        >
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              whileHover={{ y: -8 }}
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(201, 169, 98, 0.2)',
+                padding: '48px 40px',
+                position: 'relative',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: '-20px',
+                left: '40px',
+                width: '40px',
+                height: '40px',
+                background: 'linear-gradient(135deg, #C9A962, #A68B3E)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#FFFFFF'
+              }}>
+                {service.icon}
+              </div>
+              <div style={{ marginTop: '24px' }}>
+                <h3 style={{ color: '#FFFFFF', marginBottom: '16px' }}>{service.title}</h3>
+                <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '24px' }}>{service.description}</p>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {service.offerings.map((item, i) => (
+                    <li key={i} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '12px',
+                      color: 'rgba(255,255,255,0.8)',
+                      fontSize: '14px'
+                    }}>
+                      <Check size={16} style={{ color: '#C9A962', flexShrink: 0 }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Benefits Section - Why Integrated
+function IntegratedBenefits() {
+  const problems = [
+    { icon: <X size={20} />, text: 'Miss komunikasi antar tim' },
+    { icon: <X size={20} />, text: 'Revisi berulang dan pemborosan' },
+    { icon: <X size={20} />, text: 'Pembengkakan biaya tak terduga' },
+    { icon: <X size={20} />, text: 'Keterlambatan proyek' },
+    { icon: <X size={20} />, text: 'Ketidaksesuaian hasil akhir' },
+  ];
+
+  const solutions = [
+    { icon: <Check size={20} />, text: 'Desain lebih akurat dengan integrasi tim' },
+    { icon: <Check size={20} />, text: 'Biaya lebih efisien tanpa redundansi' },
+    { icon: <Check size={20} />, text: 'Waktu pengerjaan lebih cepat' },
+    { icon: <Check size={20} />, text: 'Pengawasan lebih mudah satu pintu' },
+    { icon: <Check size={20} />, text: 'Hasil akhir sesuai visual 3D' },
+    { icon: <Check size={20} />, text: 'Risiko kesalahan lapangan minimal' },
+    { icon: <Check size={20} />, text: 'Kontrol kualitas maksimal' },
+    { icon: <Check size={20} />, text: 'Nilai investasi properti tinggi' },
+  ];
+
+  return (
+    <section id="benefits" className="section bg-ivory">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Keuntungan Terintegrasi</motion.span>
+          <motion.h2 variants={fadeInUp}>Mengapa Design + Konstruksi + Interior dalam Satu Tim Lebih Menguntungkan?</motion.h2>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            gap: '48px',
+            maxWidth: '1200px',
+            margin: '0 auto'
+          }}
+        >
+          {/* Problems */}
+          <div style={{
+            background: '#FFFFFF',
+            padding: '48px',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: '#E74C3C'
+            }} />
+            <h4 style={{ marginBottom: '8px', color: '#E74C3C' }}>Tanpa Integrasi</h4>
+            <p style={{ color: '#8B8680', marginBottom: '32px', fontSize: '14px' }}>
+              Ketika desain, konstruksi dan interior dikerjakan tim berbeda
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {problems.map((item, index) => (
+                <li key={index} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  padding: '16px 0',
+                  borderBottom: index < problems.length - 1 ? '1px solid rgba(231, 76, 60, 0.1)' : 'none',
+                  color: '#E74C3C'
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    background: 'rgba(231, 76, 60, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    {item.icon}
+                  </div>
+                  <span style={{ color: '#2C2C2C', fontSize: '14px' }}>{item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Solutions */}
+          <div style={{
+            background: '#2C2C2C',
+            padding: '48px',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, #C9A962, #D4BD7A)'
+            }} />
+            <h4 style={{ marginBottom: '8px', color: '#C9A962' }}>Dengan ADITYARCH</h4>
+            <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '32px', fontSize: '14px' }}>
+              Satu tim terintegrasi untuk semua kebutuhan Anda
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {solutions.map((item, index) => (
+                <li key={index} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  padding: '12px 0',
+                  borderBottom: index < solutions.length - 1 ? '1px solid rgba(201, 169, 98, 0.1)' : 'none'
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    background: 'rgba(201, 169, 98, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    {item.icon}
+                  </div>
+                  <span style={{ color: '#FFFFFF', fontSize: '14px' }}>{item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ textAlign: 'center', marginTop: '64px' }}
+        >
+          <a
+            href="https://wa.me/6282147777570?text=Halo,%20saya%20tertarik%20dengan%20paket%20terintegrasi%20ADITYARCH"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-gold btn-lg"
+          >
+            Konsultasikan Proyek Anda
+            <ArrowRight size={18} />
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// European Modern Classic Collection
+function EuropeanCollection() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const europeanHouses = [
+    {
+      id: 1,
+      title: 'Neoclassical Master Suite',
+      style: 'Neoclassical',
+      budget: 'Rp 4.5 - 6.5 Miliar',
+      features: ['Master Bedroom', 'Walk-in Closet', 'Marble Bathroom', 'Gold Accents'],
+      image: '/src/assets/Screenshot_2026-06-06_212358.png',
+      investmentValue: '+18%',
+      description: 'Desain mewah dengan sentuhan emas dan marmer premium. Estetika neoclassical yang timeless.'
+    },
+    {
+      id: 2,
+      title: 'Traditional Wood Luxury',
+      style: 'Traditional Modern',
+      budget: 'Rp 3.8 - 5.2 Miliar',
+      features: ['Warm Woods', 'Traditional Design', 'Premium Fabrics', 'Elegant Details'],
+      image: '/src/assets/Screenshot_2026-06-06_212424.png',
+      investmentValue: '+15%',
+      description: 'Kombinasi sempurna antara tradisional dan modern dengan material kayu berkualitas tinggi.'
+    },
+    {
+      id: 3,
+      title: 'Modern Minimalist Brick',
+      style: 'Contemporary',
+      budget: 'Rp 3.2 - 4.8 Miliar',
+      features: ['Minimalist Design', 'Brick Facade', 'Open Space', 'Modern Lines'],
+      image: '/src/assets/Screenshot_2026-06-06_212442.png',
+      investmentValue: '+12%',
+      description: 'Desain minimalis modern dengan facade bata yang elegant. Sempurna untuk profesional muda.'
+    },
+    {
+      id: 4,
+      title: 'European Neoclassical Palace',
+      style: 'Neoclassical',
+      budget: 'Rp 6.5 - 9.5 Miliar',
+      features: ['2 Lantai', 'Balcony Klasik', 'Premium Finishing', 'Grand Entrance'],
+      image: '/src/assets/Screenshot_2026-06-06_212521.png',
+      investmentValue: '+22%',
+      description: 'Rumah bergaya istana dengan arsitektur neoclassical murni. Investasi property eksklusif.'
+    },
+    {
+      id: 5,
+      title: 'Contemporary Commercial',
+      style: 'Commercial Modern',
+      budget: 'Rp 5.5 - 8.5 Miliar',
+      features: ['Commercial Space', 'Modern Design', 'Multi Function', 'Investment Grade'],
+      image: '/src/assets/Screenshot_2026-06-06_212532.png',
+      investmentValue: '+25%',
+      description: 'Bangunan komersial dengan desain kontemporer yang menghasilkan rental income tinggi.'
+    },
+    {
+      id: 6,
+      title: 'Furniture Collection Showcase',
+      style: 'Interior Design',
+      budget: 'Furnitur Custom - Mulai Rp 500 Juta',
+      features: ['Contemporary Woods', 'Custom Design', 'Premium Quality', 'Premium Finish'],
+      image: '/src/assets/Screenshot_2026-06-06_212559.png',
+      investmentValue: '+Value',
+      description: 'Koleksi furniture custom dengan desain kontemporer dan material berkualitas premium.'
+    },
+    {
+      id: 7,
+      title: 'Modern Minimalist Pavilion',
+      style: 'Contemporary',
+      budget: 'Rp 2.8 - 4.2 Miliar',
+      features: ['Metal Structure', 'Glass Walls', 'Modern Design', 'Open Concept'],
+      image: '/src/assets/Screenshot_2026-06-06_212614.png',
+      investmentValue: '+14%',
+      description: 'Pavilion modern dengan struktur metal dan kaca. Sempurna untuk guest house atau studio.'
+    },
+    {
+      id: 8,
+      title: 'Tropical Modern Resort',
+      style: 'Tropical Contemporary',
+      budget: 'Rp 8.5 - 15 Miliar+',
+      features: ['Resort Style', 'Landscape Integration', 'Pool Area', 'Investment Property'],
+      image: '/src/assets/Screenshot_2026-06-06_212757.png',
+      investmentValue: '+28%',
+      description: 'Resort mewah dengan integrasi landscape alami. Ideal untuk investment property atau private resort.'
+    },
+  ];
+
+  return (
+    <section className="section bg-white" style={{ position: 'relative' }}>
+      {/* Decorative Background */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        right: '-5%',
+        width: '600px',
+        height: '600px',
+        background: 'radial-gradient(circle, rgba(201, 169, 98, 0.08) 0%, transparent 70%)',
+        borderRadius: '50%',
+        pointerEvents: 'none'
+      }} />
+
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Koleksi Eksklusif</motion.span>
+          <motion.h2 variants={fadeInUp}>European Modern Classic Collection</motion.h2>
+          <motion.p variants={fadeInUp}>
+            Inspirasi desain mewah bergaya Eropa yang cocok untuk investment property di Balikpapan dengan nilai apresiasi tinggi
+          </motion.p>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        {/* Collection Grid */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '32px',
+            marginTop: '48px'
+          }}
+        >
+          {europeanHouses.map((house, index) => (
+            <motion.div
+              key={house.id}
+              variants={fadeInUp}
+              whileHover={{ y: -12, transition: { duration: 0.3 } }}
+              onClick={() => setSelectedImage(house.image)}
+              style={{
+                background: '#FFFFF0',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              {/* Image Container */}
+              <div style={{
+                position: 'relative',
+                overflow: 'hidden',
+                height: '280px',
+                background: '#F5F5F0'
+              }}>
+                <img
+                  src={house.image}
+                  alt={house.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'transform 0.6s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.08)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                />
+                {/* Investment Badge */}
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: 'linear-gradient(135deg, #C9A962, #A68B3E)',
+                  color: '#FFFFFF',
+                  padding: '8px 16px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}>
+                  {house.investmentValue} Growth
+                </div>
+              </div>
+
+              {/* Content */}
+              <div style={{
+                padding: '32px',
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1
+              }}>
+                <div style={{ marginBottom: '16px' }}>
+                  <span style={{
+                    display: 'inline-block',
+                    background: 'rgba(201, 169, 98, 0.1)',
+                    color: '#C9A962',
+                    padding: '6px 12px',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    marginBottom: '12px'
+                  }}>
+                    {house.style}
+                  </span>
+                </div>
+
+                <h3 style={{
+                  color: '#2C2C2C',
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  marginBottom: '12px',
+                  lineHeight: 1.3
+                }}>
+                  {house.title}
+                </h3>
+
+                <p style={{
+                  color: '#8B8680',
+                  fontSize: '13px',
+                  lineHeight: 1.6,
+                  marginBottom: '20px'
+                }}>
+                  {house.description}
+                </p>
+
+                {/* Budget Info */}
+                <div style={{
+                  padding: '16px',
+                  background: 'rgba(201, 169, 98, 0.08)',
+                  marginBottom: '20px',
+                  borderLeft: '3px solid #C9A962'
+                }}>
+                  <p style={{
+                    fontSize: '11px',
+                    color: '#8B8680',
+                    margin: '0 0 6px 0',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: 500
+                  }}>Estimasi Budget</p>
+                  <p style={{
+                    color: '#C9A962',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    margin: 0
+                  }}>{house.budget}</p>
+                </div>
+
+                {/* Features */}
+                <div style={{ marginBottom: 'auto' }}>
+                  <p style={{
+                    fontSize: '11px',
+                    color: '#8B8680',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: 500,
+                    marginBottom: '8px'
+                  }}>Fitur Utama</p>
+                  <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '8px'
+                  }}>
+                    {house.features.map((feature, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          background: '#2C2C2C',
+                          color: '#FFFFFF',
+                          padding: '6px 12px',
+                          fontSize: '11px',
+                          fontWeight: 500,
+                          borderRadius: '4px'
+                        }}
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  style={{
+                    marginTop: '20px',
+                    padding: '12px 20px',
+                    background: '#2C2C2C',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#C9A962';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#2C2C2C';
+                  }}
+                >
+                  Lihat Detail
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Investment Info Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{
+            marginTop: '72px',
+            padding: '48px',
+            background: '#F5F5F0',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <div style={{
+            position: 'absolute',
+            top: -50,
+            right: -50,
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(201, 169, 98, 0.15) 0%, transparent 70%)'
+          }} />
+
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h3 style={{ color: '#2C2C2C', marginBottom: '24px', fontSize: '24px', fontWeight: 600 }}>
+              Investasi Property Bernilai Tinggi
+            </h3>
+            <p style={{
+              color: '#8B8680',
+              fontSize: '16px',
+              lineHeight: 1.8,
+              marginBottom: '32px',
+              maxWidth: '600px'
+            }}>
+              Desain Modern Classic Eropa bukan hanya sekadar rumah tinggal, tapi juga asset investasi yang terus bertambah nilainya. Lokasi strategis di Balikpapan dan Kalimantan Timur menjadikan property dengan desain premium semakin diminati investor dan pembeli.
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '24px'
+            }}>
+              {[
+                { label: 'Apresiasi Nilai', value: '12-28% / Tahun', icon: '📈' },
+                { label: 'ROI Rental', value: '6-9% / Tahun', icon: '💰' },
+                { label: 'Unique Design', value: 'Langka di Kawasan', icon: '✨' },
+                { label: 'High Demand', value: 'Pembeli Premium', icon: '👥' }
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: '20px',
+                    background: '#FFFFFF',
+                    border: '1px solid rgba(201, 169, 98, 0.2)'
+                  }}
+                >
+                  <p style={{
+                    fontSize: '24px',
+                    margin: '0 0 8px 0'
+                  }}>{stat.icon}</p>
+                  <p style={{
+                    fontSize: '12px',
+                    color: '#8B8680',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: 500,
+                    margin: '0 0 8px 0'
+                  }}>{stat.label}</p>
+                  <p style={{
+                    color: '#C9A962',
+                    fontSize: '18px',
+                    fontWeight: 600,
+                    margin: 0
+                  }}>{stat.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ textAlign: 'center', marginTop: '64px' }}
+        >
+          <a
+            href="https://wa.me/6282147777570?text=Halo,%20saya%20tertarik%20dengan%20European%20Modern%20Classic%20Collection"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-gold btn-lg"
+          >
+            Konsultasi Investment Property
+            <ArrowRight size={18} />
+          </a>
+          <p style={{
+            color: '#8B8680',
+            fontSize: '14px',
+            marginTop: '16px'
+          }}>
+            Free consultation & detailed investment analysis untuk klien serius
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.95)',
+              zIndex: 2000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '40px',
+              cursor: 'pointer'
+            }}
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                color: '#FFFFFF',
+                padding: '8px'
+              }}
+            >
+              <X size={32} />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              src={selectedImage}
+              alt="European Collection"
+              style={{
+                maxWidth: '90%',
+                maxHeight: '90vh',
+                objectFit: 'contain'
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+// Testimonials Section
+function Testimonials() {
+  const testimonials = [
+    {
+      name: 'Keluarga Wijaya',
+      location: 'Balikpapan',
+      project: 'Rumah Modern Classic 2 Lantai',
+      text: 'Kami sangat puas dengan hasil desain dan pelaksanaan pembangunan. Hasil akhirnya bahkan melebihi ekspektasi. Tim sangat profesional dan komunikatif.',
+      rating: 5
+    },
+    {
+      name: 'Bapak Hendra',
+      location: 'Samarinda',
+      project: 'Renovasi Total Interior',
+      text: 'Komunikasi sangat baik dan pengerjaan rapi. Proses dari awal sampai akhir berjalan lancar dengan progress report berkala.',
+      rating: 5
+    },
+    {
+      name: 'Ibu Kartini',
+      location: 'Balikpapan',
+      project: 'Kitchen Set & Wardrobe Custom',
+      text: 'Konsep modern classic yang dihasilkan sangat elegan dan berkelas. Material premium dan detail finishing sangat memuaskan.',
+      rating: 5
+    },
+    {
+      name: 'Keluarga Tanoto',
+      location: 'Penajam',
+      project: 'Villa Tropical',
+      text: 'Pengalaman proyek di Bali terlihat jelas dari kualitas desain dan pengerjaan. Tim sangat memahami estetika luxury.',
+      rating: 5
+    }
+  ];
+
+  return (
+    <section id="testimonials" className="section bg-white">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Testimoni</motion.span>
+          <motion.h2 variants={fadeInUp}>Kata Mereka Tentang Kami</motion.h2>
+          <motion.p variants={fadeInUp}>Kepercayaan klien adalah prioritas utama kami</motion.p>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '32px'
+          }}
+        >
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              style={{
+                background: '#FFFFF0',
+                padding: '40px',
+                position: 'relative'
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: '32px',
+                right: '32px',
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '80px',
+                color: 'rgba(201, 169, 98, 0.15)',
+                lineHeight: 1
+              }}>
+                "
+              </div>
+
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '20px' }}>
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} size={16} fill="#C9A962" color="#C9A962" />
+                ))}
+              </div>
+
+              <p style={{
+                fontStyle: 'italic',
+                marginBottom: '24px',
+                color: '#2C2C2C',
+                lineHeight: 1.8
+              }}>
+                "{testimonial.text}"
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  background: 'linear-gradient(135deg, #2C2C2C, #1A1A1A)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#C9A962',
+                  fontWeight: 600,
+                  fontSize: '18px'
+                }}>
+                  {testimonial.name.charAt(0)}
+                </div>
+                <div>
+                  <p style={{ color: '#2C2C2C', fontWeight: 500, margin: 0 }}>{testimonial.name}</p>
+                  <p style={{ fontSize: '13px', color: '#8B8680', margin: 0 }}>{testimonial.location} - {testimonial.project}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Free Survey Section
+function FreeSurvey() {
+  return (
+    <section className="section bg-charcoal" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Decorative Elements */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '-10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(201, 169, 98, 0.1) 0%, transparent 70%)',
+        transform: 'translateY(-50%)'
+      }} />
+
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Penawaran Spesial</motion.span>
+          <motion.h2 variants={fadeInUp} style={{ color: '#FFFFFF', marginBottom: '24px' }}>
+            Survey dan Konsultasi GRATIS Area Balikpapan
+          </motion.h2>
+          <motion.p variants={fadeInUp} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', marginBottom: '40px' }}>
+            Diskusikan kebutuhan rumah impian Anda bersama tim profesional kami tanpa biaya apapun
+          </motion.p>
+
+          <motion.div
+            variants={fadeInUp}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '24px',
+              marginBottom: '48px'
+            }}
+          >
+            {[
+              { text: 'Konsultasi awal gratis' },
+              { text: 'Survey lokasi gratis' },
+              { text: 'Estimasi biaya awal' },
+              { text: 'Konsep desain awal' }
+            ].map((item, index) => (
+              <div key={index} style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(201, 169, 98, 0.2)',
+                padding: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}>
+                <Check size={20} style={{ color: '#C9A962', flexShrink: 0 }} />
+                <span style={{ color: '#FFFFFF', fontSize: '14px' }}>{item.text}</span>
+              </div>
+            ))}
+          </motion.div>
+
+          <motion.div variants={fadeInUp}>
+            <a
+              href="https://wa.me/6282147777570?text=Halo,%20saya%20ingin%20jadwalkan%20konsultasi%20gratis"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-gold btn-lg"
+              style={{
+                fontSize: '18px',
+                padding: '24px 56px',
+                fontWeight: 600
+              }}
+            >
+              KONSULTASI SEKARANG
+              <ArrowRight size={20} />
+            </a>
+            <p style={{
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: '14px',
+              marginTop: '16px'
+            }}>
+              Terhubung langsung via WhatsApp: 082147777570
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Coverage Area Section
+function CoverageArea() {
+  const areas = [
+    { name: 'Balikpapan', highlight: true },
+    { name: 'Samarinda', highlight: false },
+    { name: 'Tenggarong', highlight: false },
+    { name: 'Penajam Paser Utara', highlight: false },
+    { name: 'Bontang', highlight: false },
+    { name: 'Sangatta', highlight: false },
+    { name: 'IKN Nusantara', highlight: true },
+  ];
+
+  return (
+    <section id="coverage" className="section bg-ivory">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="section-header"
+        >
+          <motion.span variants={fadeInUp} className="section-subtitle">Area Layanan</motion.span>
+          <motion.h2 variants={fadeInUp}>Melayani Seluruh Kalimantan Timur</motion.h2>
+          <motion.p variants={fadeInUp}>
+            Kini hadir di Balikpapan dan siap melayani proyek Anda di seluruh wilayah Kalimantan Timur
+          </motion.p>
+          <motion.div variants={fadeInUp} className="gold-line gold-line-center" style={{ marginTop: '24px' }} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '16px',
+            marginBottom: '48px'
+          }}
+        >
+          {areas.map((area, index) => (
+            <div
+              key={index}
+              style={{
+                padding: '16px 32px',
+                background: area.highlight
+                  ? 'linear-gradient(135deg, #C9A962, #A68B3E)'
+                  : '#FFFFFF',
+                border: area.highlight ? 'none' : '1px solid rgba(44, 44, 44, 0.1)',
+                color: area.highlight ? '#FFFFFF' : '#2C2C2C',
+                fontWeight: area.highlight ? 600 : 400,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <MapPin size={18} />
+              {area.name}
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Map Visualization */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          style={{
+            maxWidth: '1000px',
+            margin: '0 auto',
+            background: '#2C2C2C',
+            padding: '64px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.1,
+            backgroundImage: `url('https://images.pexels.com/photos/95916/pexels-photo-95916.jpeg?auto=compress&cs=tinysrgb&w=1200')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }} />
+
+          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+            <MapPin size={48} style={{ color: '#C9A962', marginBottom: '24px' }} />
+            <h3 style={{ color: '#FFFFFF', marginBottom: '16px' }}>Jangkauan Layanan Kami</h3>
+            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '32px' }}>
+              Dari Balikpapan hingga IKN Nusantara, siap mewujudkan hunian impian Anda
+            </p>
+            <a
+              href="https://wa.me/6282147777570"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-gold-outline"
+            >
+              Cek Ketersediaan di Lokasi Anda
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Footer
+function Footer() {
+  return (
+    <footer id="contact" style={{
+      background: '#1A1A1A',
+      padding: '80px 0 40px',
+      position: 'relative'
+    }}>
+      <div className="container">
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '48px',
+          marginBottom: '48px'
+        }}>
+          {/* Brand */}
+          <div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              marginBottom: '24px'
+            }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                background: 'linear-gradient(135deg, #2C2C2C, #1A1A1A)',
+                border: '1px solid rgba(201, 169, 98, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <span style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: '#C9A962'
+                }}>A</span>
+              </div>
+              <div>
+                <span style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase'
+                }}>ADITYARCH</span>
+                <span style={{
+                  display: 'block',
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  color: '#C9A962',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase'
+                }}>Studio & Build</span>
+              </div>
+            </div>
+            <p style={{
+              color: 'rgba(255,255,255,0.6)',
+              fontSize: '14px',
+              lineHeight: 1.8,
+              marginBottom: '24px'
+            }}>
+              Designing Timeless Luxury, Building Your Legacy. Kami menghadirkan solusi terintegrasi untuk arsitektur, konstruksi, dan interior premium.
+            </p>
+            <p style={{
+              color: '#C9A962',
+              fontSize: '12px',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase'
+            }}>
+              Design | Build | Interior | Furniture
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 style={{ color: '#FFFFFF', marginBottom: '24px', fontSize: '14px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Layanan</h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {[
+                { label: 'Architectural Design', href: '#services' },
+                { label: 'Construction & Build', href: '#services' },
+                { label: 'Interior Design', href: '#services' },
+                { label: 'Custom Furniture', href: '#services' },
+                { label: 'Project Management', href: '#services' }
+              ].map((link, index) => (
+                <li key={index} style={{ marginBottom: '12px' }}>
+                  <a
+                    href={link.href}
+                    style={{
+                      color: 'rgba(255,255,255,0.6)',
+                      fontSize: '14px',
+                      transition: 'color 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#C9A962'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 style={{ color: '#FFFFFF', marginBottom: '24px', fontSize: '14px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Kontak</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <MapPin size={18} style={{ color: '#C9A962', marginTop: '2px', flexShrink: 0 }} />
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', margin: 0 }}>
+                  Teritip, Balikpapan Timur<br />
+                  Kota Balikpapan, Kalimantan Timur 76118
+                </p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Phone size={18} style={{ color: '#C9A962' }} />
+                <a
+                  href="https://wa.me/6282147777570"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}
+                >
+                  082147777570
+                </a>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Mail size={18} style={{ color: '#C9A962' }} />
+                <a
+                  href="mailto:info@adityarchstudio.com"
+                  style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}
+                >
+                  info@adityarchstudio.com
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{
+          height: '1px',
+          background: 'rgba(201, 169, 98, 0.2)',
+          marginBottom: '32px'
+        }} />
+
+        {/* Copyright */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '16px'
+        }}>
+          <p style={{
+            color: 'rgba(255,255,255,0.4)',
+            fontSize: '13px',
+            margin: 0
+          }}>
+            2026 ADITYARCH Studio & Build. All rights reserved.
+          </p>
+          <div style={{ display: 'flex', gap: '24px' }}>
+            <a href="#portfolio" style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px' }}>Portfolio</a>
+            <a href="#services" style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px' }}>Layanan</a>
+            <a href="https://wa.me/6282147777570" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A962', fontSize: '13px' }}>Hubungi Kami</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// WhatsApp Floating Button
+function WhatsAppButton() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setVisible(window.scrollY > 300);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <motion.a
+      href="https://wa.me/6282147777570"
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{
+        scale: visible ? 1 : 0,
+        opacity: visible ? 1 : 0
+      }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      style={{
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        width: '64px',
+        height: '64px',
+        background: 'linear-gradient(135deg, #25D366, #128C7E)',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 20px rgba(37, 211, 102, 0.4)',
+        zIndex: 9999,
+        cursor: 'pointer'
+      }}
+    >
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="#FFFFFF">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </motion.a>
+  );
+}
+
+// Main App
+function App() {
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <WhyChooseUs />
+        <Portfolio />
+        <EuropeanCollection />
+        <Services />
+        <IntegratedBenefits />
+        <Testimonials />
+        <FreeSurvey />
+        <CoverageArea />
+      </main>
+      <Footer />
+      <WhatsAppButton />
+    </>
+  );
+}
+
+export default App;
