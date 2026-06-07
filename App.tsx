@@ -14,7 +14,7 @@ function App() {
       textAlign: 'center',
       padding: '20px'
     }}>
-      <h1 style={{ letterSpacing: '2px', textTransform: 'uppercase' }}>Adityarch Studio</h1>
+      <h1 style={{ letterSpacing: '2px', textTransform: 'uppercase' }}>Adityarch Studio.</h1>
       <p style={{ color: '#aaa', fontSize: '18px' }}>Architecture & Interior Design Portfolio</p>
       <hr style={{ width: '50px', borderColor: '#555', margin: '20px 0' }} />
       <p style={{ color: '#666', fontSize: '14px' }}>Website is under maintenance. Shifting components to root directory.</p>
