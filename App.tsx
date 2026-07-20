@@ -4,7 +4,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState('All')
 
   // Partner with VARCHITECT in developing high-value businesses across Energy & Natural Resources, Real Estate, Infrastructure, Hospitality, Manufacturing, Food & Beverage, Sports & Lifestyle, and Digital Innovation. Every opportunity is driven by comprehensive feasibility analysis, professional execution, and a long-term value creation strategy.
-  VARCHITECT GROUP = [
+  VARCHITECT = [
     { id: 1, name: 'Strategic Coal Mining Project', category: 'Natural Resources', investment: 'Rp 17,5 B - 60 B', Target Annual Return: '15-20% / Year', (subject to project performance and market conditions) / Year', description:  "Investment opportunity in an operating coal mining project with long-term production potential, supported by feasibility analysis and professional project management." },
     { id: 2, name: 'Integrated Agribusiness & Food Estate', category: 'Natural Resources', investment: 'Rp 7,5 B - 9 B', Target Annual Return: '14-18% / Year', description: 'Smart Farming, Livestock, Plantation, Food Processing & Sustainable Agriculture' },
     { id: 3, name: 'Coffee Chain Expansion Project', category: 'Food & Beverage', investment: 'Rp 3,8 B - 5 B', Target Annual Return: '18-27% / Year', description: 'Multi-Outlet Development • Central Kitchen • Brand Expansion • Franchise System • Digital Ordering' },
