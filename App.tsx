@@ -34,7 +34,7 @@ function App() {
       {/* HEADER NAVIGATION */}
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '25px 8%', borderBottom: '1px solid #333', backgroundColor: '#111', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ fontSize: '22px', fontWeight: 'bold', letterSpacing: '4px', color: colors.gold }}>
-          VARCHITECT <span style={{ color: colors.white, fontWeight: '300' }}>GROUP</span>
+          VARCHITECT <span style={{ color: colors.white, fontWeight: '300' }}>holding</span>
         </div>
         <nav style={{ display: 'flex', gap: '30px', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '2px' }}>
           <a href="#hero" style={{ color: colors.white, textDecoration: 'none' }}>Home</a>
@@ -157,7 +157,7 @@ Diversified Investment Opportunities Across High-Growth Industries.</p>
       <footer id="contact" style={{ backgroundColor: '#0f0f0f', padding: '80px 8% 40px 8%', borderTop: `1px solid ${colors.gold}` }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '50px', marginBottom: '60px' }}>
           <div>
-            <h4 style={{ color: colors.gold, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>VARCHITECT GROUP</h4>
+            <h4 style={{ color: colors.gold, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '20px' }}>VARCHITECT</h4>
             <p style={{ color: '#888', fontSize: '14px', lineHeight: '1.6' }}>
               One Ecosystem. Endless Opportunities.
 
@@ -183,7 +183,7 @@ VARCHITECT GROUP develops and manages high-value businesses across strategic ind
         </div>
         
         <div style={{ borderTop: '1px solid #222', paddingTop: '30px', textAlign: 'center', fontSize: '12px', color: '#555', letterSpacing: '1px' }}>
-          &copy; 2026 VARCHITECT GROUP. All rights reserved. Premium Production Version 2.0.0.
+          &copy; 2026 VARCHITECT . All rights reserved. Premium Production Version 2.0.0.
         </div>
       </footer>
 
