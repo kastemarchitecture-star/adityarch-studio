@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 function App() {
-  varchitectgroup [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   // Partner with VARCHITECT GROUP in developing high-value businesses across Energy & Natural Resources, Real Estate, Infrastructure, Hospitality, Manufacturing, Food & Beverage, Sports & Lifestyle, and Digital Innovation. Every opportunity is driven by comprehensive feasibility analysis, professional execution, and a long-term value creation strategy.
   VARCHITECT GROUP = [
